@@ -25,6 +25,8 @@ class BundleGenerator extends Generator
 
     public function __construct(Filesystem $filesystem)
     {
+        parent::__construct();
+
         $this->filesystem = $filesystem;
     }
 

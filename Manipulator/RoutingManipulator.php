@@ -59,7 +59,7 @@ class RoutingManipulator extends Manipulator
                 throw new \RuntimeException(sprintf('Bundle "%s" is already imported.', $bundle));
             }
         } elseif (!is_dir($dir = dirname($this->file))) {
-            mkdir($dir, 0777, true);
+            Generator::mkdir($dir);
         }
 
         if ('annotation' == $format) {
@@ -71,7 +71,7 @@ class RoutingManipulator extends Manipulator
         $code .= "\n";
         $code .= $current;
 
-        if (false === file_put_contents($this->file, $code)) {
+        if (false === Generator::dump($this->file, $code)) {
             return false;
         }
 

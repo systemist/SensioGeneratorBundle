@@ -12,6 +12,7 @@
 namespace Sensio\Bundle\GeneratorBundle\Manipulator;
 
 use Symfony\Component\HttpKernel\KernelInterface;
+use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 
 /**
  * Changes the PHP code of a Kernel.
@@ -115,7 +116,7 @@ class KernelManipulator extends Manipulator
                     array_slice($src, $this->line)
                 );
 
-                file_put_contents($this->getFilename(), implode('', $lines));
+                Generator::dump($this->getFilename(), implode('', $lines));
 
                 return true;
             }

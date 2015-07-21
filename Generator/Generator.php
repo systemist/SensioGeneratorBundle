@@ -11,6 +11,8 @@
 
 namespace Sensio\Bundle\GeneratorBundle\Generator;
 
+use Symfony\Component\Console\Output\ConsoleOutput;
+
 /**
  * Generator is the base class for all generators.
  *
@@ -19,6 +21,12 @@ namespace Sensio\Bundle\GeneratorBundle\Generator;
 class Generator
 {
     private $skeletonDirs;
+    private static $output;
+
+    public function __construct()
+    {
+        self::$output = new ConsoleOutput();
+    }
 
     /**
      * Sets an array of directories to look for templates.
@@ -58,9 +66,31 @@ class Generator
     protected function renderFile($template, $target, $parameters)
     {
         if (!is_dir(dirname($target))) {
-            mkdir(dirname($target), 0777, true);
+            self::mkdir(dirname($target));
         }
 
-        return file_put_contents($target, $this->render($template, $parameters));
+        return self::dump($target, $this->render($template, $parameters));
+    }
+
+    public static function mkdir($dir, $mode = 0777, $recursive = true)
+    {
+        mkdir($dir, $mode, $recursive);
+        self::$output->writeln(sprintf('  <fg=green>[+dir]   </> %s', self::relativizePath($dir)));
+    }
+
+    public static function dump($filename, $content)
+    {
+        if (file_exists($filename)) {
+            self::$output->writeln(sprintf('  <fg=yellow>[changed]</> %s', self::relativizePath($filename)));
+        } else {
+            self::$output->writeln(sprintf('  <fg=green>[+file]</>   %s', self::relativizePath($filename)));
+        }
+
+        return file_put_contents($filename, $content);
+    }
+
+    private static function relativizePath($absoluteDir)
+    {
+        return str_replace(getcwd(), '.', $absoluteDir);
     }
 }
