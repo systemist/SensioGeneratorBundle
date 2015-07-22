@@ -75,22 +75,24 @@ class Generator
     public static function mkdir($dir, $mode = 0777, $recursive = true)
     {
         mkdir($dir, $mode, $recursive);
-        self::$output->writeln(sprintf('  <fg=green>[+dir]   </> %s', self::relativizePath($dir)));
+        self::$output->writeln(sprintf('  <fg=green>created</> %s', self::relativizePath($dir)));
     }
 
     public static function dump($filename, $content)
     {
         if (file_exists($filename)) {
-            self::$output->writeln(sprintf('  <fg=yellow>[changed]</> %s', self::relativizePath($filename)));
+            self::$output->writeln(sprintf('  <fg=yellow>updated</> %s', self::relativizePath($filename)));
         } else {
-            self::$output->writeln(sprintf('  <fg=green>[+file]</>   %s', self::relativizePath($filename)));
+            self::$output->writeln(sprintf('  <fg=green>created</> %s', self::relativizePath($filename)));
         }
 
         return file_put_contents($filename, $content);
     }
 
-    private static function relativizePath($absoluteDir)
+    private static function relativizePath($absolutePath)
     {
-        return str_replace(getcwd(), '.', $absoluteDir);
+        $relativePath = str_replace(getcwd(), '.', $absolutePath);
+
+        return is_dir($absolutePath) ? rtrim($relativePath, '/').'/' : $relativePath;
     }
 }
