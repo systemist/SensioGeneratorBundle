@@ -100,7 +100,7 @@ class DoctrineEntityGenerator extends Generator
         self::dump($entityPath, $entityCode);
 
         if ($mappingPath) {
-            self::mkdir(dirname(dirname($mappingPath));
+            self::mkdir(dirname($mappingPath));
             self::dump($mappingPath, $mappingCode);
         }
 
