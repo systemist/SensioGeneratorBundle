@@ -34,8 +34,6 @@ class DoctrineEntityGenerator extends Generator
 
     public function __construct(Filesystem $filesystem, RegistryInterface $registry)
     {
-        parent::__construct();
-
         $this->filesystem = $filesystem;
         $this->registry = $registry;
     }

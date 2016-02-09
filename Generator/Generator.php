@@ -23,11 +23,6 @@ class Generator
     private $skeletonDirs;
     private static $output;
 
-    public function __construct()
-    {
-        self::$output = new ConsoleOutput();
-    }
-
     /**
      * Sets an array of directories to look for templates.
      *
@@ -75,18 +70,27 @@ class Generator
     public static function mkdir($dir, $mode = 0777, $recursive = true)
     {
         mkdir($dir, $mode, $recursive);
-        self::$output->writeln(sprintf('  <fg=green>created</> %s', self::relativizePath($dir)));
+        self::writeln(sprintf('  <fg=green>created</> %s', self::relativizePath($dir)));
     }
 
     public static function dump($filename, $content)
     {
         if (file_exists($filename)) {
-            self::$output->writeln(sprintf('  <fg=yellow>updated</> %s', self::relativizePath($filename)));
+            self::writeln(sprintf('  <fg=yellow>updated</> %s', self::relativizePath($filename)));
         } else {
-            self::$output->writeln(sprintf('  <fg=green>created</> %s', self::relativizePath($filename)));
+            self::writeln(sprintf('  <fg=green>created</> %s', self::relativizePath($filename)));
         }
 
         return file_put_contents($filename, $content);
+    }
+
+    private static function writeln($message)
+    {
+        if (null === self::$output = new ConsoleOutput()) {
+            self::$output = new ConsoleOutput();
+        }
+
+        self::output->writeln($message);
     }
 
     private static function relativizePath($absolutePath)

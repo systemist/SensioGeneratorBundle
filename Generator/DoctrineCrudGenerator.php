@@ -43,8 +43,6 @@ class DoctrineCrudGenerator extends Generator
      */
     public function __construct(Filesystem $filesystem, $rootDir)
     {
-        parent::__construct();
-
         $this->filesystem = $filesystem;
         $this->rootDir = $rootDir;
     }
