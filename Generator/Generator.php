@@ -86,11 +86,11 @@ class Generator
 
     private static function writeln($message)
     {
-        if (null === self::$output = new ConsoleOutput()) {
+        if (null === self::$output) {
             self::$output = new ConsoleOutput();
         }
 
-        self::output->writeln($message);
+        self::$output->writeln($message);
     }
 
     private static function relativizePath($absolutePath)
