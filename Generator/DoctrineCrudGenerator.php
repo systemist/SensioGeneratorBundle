@@ -43,6 +43,8 @@ class DoctrineCrudGenerator extends Generator
      */
     public function __construct(Filesystem $filesystem, $rootDir)
     {
+        parent::__construct();
+
         $this->filesystem = $filesystem;
         $this->rootDir = $rootDir;
     }
@@ -81,7 +83,7 @@ class DoctrineCrudGenerator extends Generator
         $dir = sprintf('%s/Resources/views/%s', $this->rootDir, str_replace('\\', '/', strtolower($this->entity)));
 
         if (!file_exists($dir)) {
-            $this->filesystem->mkdir($dir, 0777);
+            self::mkdir($dir);
         }
 
         $this->generateIndexView($dir);
